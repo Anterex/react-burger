@@ -6,7 +6,7 @@ import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { createOrder } from '../BurgerConstructor/burger-constructor'
 
 export const BurgerConstructorFooter = ({ setOrderData, setOpenedModal }) => {
-  return <div className={`pt-10 ${styles.footer}`}>
+  return (<div className={`pt-10 ${styles.footer}`}>
     <BurgerConstructorTotal/>
     <Button htmlType="button" type="primary" size="large"
             onClick={() => {
@@ -14,7 +14,7 @@ export const BurgerConstructorFooter = ({ setOrderData, setOpenedModal }) => {
             }}>
       Оформить заказ
     </Button>
-  </div>
+  </div>)
 }
 
 BurgerConstructorFooter.propTypes = {

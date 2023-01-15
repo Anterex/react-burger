@@ -5,13 +5,15 @@ import { BurgerConstructorItem } from '../BurgerConstructorItem/burger-construct
 import { IngredientPropTypes } from '../../utils/propTypes'
 
 export const BurgerConstructorItemsList = ({ ingredients }) => {
-  return <ul className={styles.list}>
-    {
-      ingredients.map((ingredient) => {
-        return <BurgerConstructorItem ingredient={ingredient} key={ingredient._id}/>
-      })
-    }
-  </ul>
+  return (
+    <ul className={styles.list}>
+      {
+        ingredients.map((ingredient) => {
+          return <BurgerConstructorItem ingredient={ingredient} key={ingredient._id}/>
+        }
+        )
+      }
+    </ul>)
 }
 
 BurgerConstructorItemsList.propTypes = {
