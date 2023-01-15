@@ -1,0 +1,21 @@
+.container {
+  flex: 1;
+}
+
+.list {
+  margin-top:32px ;
+  height: 65vh;
+  overflow: auto;
+}
+
+.list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.list::-webkit-scrollbar-track {
+  background: #2F2F37;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+}

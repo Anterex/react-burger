@@ -1,0 +1,10 @@
+.container {
+    flex: 1;
+    padding: 100px 0 100px 16px;
+}
+.constructor {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
