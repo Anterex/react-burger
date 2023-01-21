@@ -1,47 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { AppHeader } from '../AppHeader/app-header'
 import { BurgerIngredients } from '../BurgerIngredients/burger-ingredients'
 import { BurgerConstructor } from '../BurgerConstructor/burger-constructor'
-import { getIngredients } from '../../utils/burger-api'
 import styles from './app.module.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchData, ingredientsSelector } from '../../services/slices/ingredients'
 
 export const App = () => {
-  const [state, setState] = useState({
-    isLoading: true,
-    hasError: false,
-    ingredients: []
-  })
+  const dispatch = useDispatch()
+  const {
+    isLoading,
+    hasError,
+    data
+  } = useSelector(ingredientsSelector)
 
   useEffect(() => {
-    getIngredients()
-      .then((data) => {
-        setState({
-          ...state,
-          ingredients: data.data,
-          isLoading: false
-        })
-      })
-      .catch((error) => {
-        setState({
-          ...state,
-          hasError: true,
-          isLoading: false
-        })
-        console.log(error)
-      })
+    dispatch(fetchData())
   }, [])
 
-  const { ingredients, isLoading, hasError } = state
-
-  return (<>
+  return <>
     <AppHeader/>
     <main className={styles.main}>
       {isLoading && 'Загрузка...'}
       {hasError && 'Ошибка'}
-      {!isLoading && !hasError && (<>
-        <BurgerIngredients data={ingredients}/>
-        <BurgerConstructor data={ingredients}/>
-      </>)}
+      {!isLoading && !hasError && data.length && <>
+        <BurgerIngredients/>
+        <BurgerConstructor/>
+      </>}
     </main>
-  </>)
+  </>
 }
