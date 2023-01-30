@@ -1,21 +1,18 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import styles from './burger-constructor-items-list.module.css'
 import { BurgerConstructorItem } from '../BurgerConstructorItem/burger-constructor-item'
-import { IngredientPropTypes } from '../../utils/propTypes'
+import { useSelector } from 'react-redux'
+import { burgerConstructorSelector } from '../../services/slices/burger-constructor'
 
-export const BurgerConstructorItemsList = ({ ingredients }) => {
+export const BurgerConstructorItemsList = () => {
+  const { ingredientsConstructor } = useSelector(burgerConstructorSelector)
   return (
     <ul className={styles.list}>
       {
-        ingredients.map((ingredient) => {
-          return <BurgerConstructorItem ingredient={ingredient} key={ingredient._id}/>
+        ingredientsConstructor.map((ingredient, index) => {
+          return <BurgerConstructorItem ingredient={ingredient} key={ingredient.uniqueId} index={index} />
         }
         )
       }
     </ul>)
-}
-
-BurgerConstructorItemsList.propTypes = {
-  ingredients: PropTypes.arrayOf(IngredientPropTypes.isRequired).isRequired
 }
