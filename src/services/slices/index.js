@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import { orderDetailsSlice } from './orde-details'
 import { ingredientDetailsSlice } from './ingredient-details'
-import { ingredientsSlice } from './Ingredients'
+import { ingredientsSlice } from './ingredients'
 import { modalSlice } from './modal'
 import { burgerConstructorSlice } from './burger-constructor'
 
