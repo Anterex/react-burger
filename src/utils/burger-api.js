@@ -1,5 +1,5 @@
 import { BackEndUrl } from './config'
-import { getData, getDataFailure, getDataSuccess } from '../services/slices/Ingredients'
+import { getData, getDataFailure, getDataSuccess } from '../services/slices/ingredients'
 import { createdOrder } from '../services/slices/orde-details'
 
 export function getIngredients () {
