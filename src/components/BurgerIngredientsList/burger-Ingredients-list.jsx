@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styles from './burger-Ingredients-list.module.css'
 import { BurgerIngredientsCard } from '../BurgerIngredientsCard/burger-ingredients-card'
 import { useSelector } from 'react-redux'
-import { ingredientsSelector } from '../../services/slices/Ingredients'
+import { ingredientsSelector } from '../../services/slices/ingredients'
 
 // eslint-disable-next-line react/display-name
 export const BurgerIngredientsList = React.forwardRef(({ title, type }, ref) => {
