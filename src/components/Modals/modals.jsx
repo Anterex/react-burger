@@ -10,17 +10,19 @@ export const Modals = () => {
 
   return (
     <>
-    {
-      modal.showIngredientDetails && (<Modal title="Детали ингредиента">
-        <IngredientDetails/>
-      </Modal>)
-    }
+      {
+        modal.showIngredientDetails && (<Modal title="Детали ингредиента">
+          <IngredientDetails/>
+        </Modal>)
+      }
 
-    {
-     modal.showOrderDetails && <Modal title="">
-      <OrderDetails />
-     </Modal>
-    }
-   </>
+      {
+        modal.showOrderDetails && <Modal title="">
+          <OrderDetails/>
+        </Modal>
+      }
+
+    </>
+
   )
 }

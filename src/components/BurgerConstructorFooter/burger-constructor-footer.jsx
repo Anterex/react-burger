@@ -4,7 +4,7 @@ import { BurgerConstructorTotal } from '../BurgerConstructorTotal/burger-constru
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDispatch, useSelector } from 'react-redux'
 import { burgerConstructorSelector } from '../../services/slices/burger-constructor'
-import { createOrder } from '../../services/slices/api'
+import { createOrder } from '../../services/actions/api'
 
 export const BurgerConstructorFooter = () => {
   const dispatch = useDispatch()

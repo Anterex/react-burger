@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ingredientsSelector } from '../../services/slices/ingredients'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { getIngredients } from '../../services/slices/api'
+import { getIngredients } from '../../services/actions/api'
 import { LoadingSpinner } from '../LoadingSpinner/loading-spinner'
 import { orderDetailsSelector } from '../../services/slices/order-details'
 

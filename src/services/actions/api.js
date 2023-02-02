@@ -1,8 +1,8 @@
 import { BackEndUrl } from '../../utils/config'
-import { getData, getDataFailure, getDataSuccess } from './ingredients'
-import { openOrderDetailsForm } from './modal'
-import { clearConstructor } from './burger-constructor'
-import { createdOrder, creatingOrder } from './order-details'
+import { getData, getDataFailure, getDataSuccess } from '../slices/ingredients'
+import { openOrderDetailsForm } from '../slices/modal'
+import { clearConstructor } from '../slices/burger-constructor'
+import { createdOrder, creatingOrder } from '../slices/order-details'
 
 export function getIngredients () {
   return async function (dispatch) {
@@ -15,7 +15,6 @@ export function getIngredients () {
       }
     }
     try {
-      await sleep(3000)
       const data = await request(url, options)
       dispatch(getDataSuccess(data.data))
     } catch (error) {
@@ -23,10 +22,6 @@ export function getIngredients () {
       console.log('Ошибка получения списка ингредиентов', error)
     }
   }
-}
-
-function sleep (ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 export function createOrder (order) {
@@ -41,7 +36,6 @@ export function createOrder (order) {
     }
     try {
       dispatch(creatingOrder())
-      await sleep(3000)
       const data = await request(url, options)
       dispatch(createdOrder(data))
       dispatch(clearConstructor())
