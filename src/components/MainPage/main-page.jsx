@@ -6,7 +6,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ingredientsSelector } from '../../services/slices/ingredients'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import { getIngredients } from '../../utils/burger-api'
+import { getIngredients } from '../../services/slices/api'
+import { LoadingSpinner } from '../LoadingSpinner/loading-spinner'
+import { orderDetailsSelector } from '../../services/slices/order-details'
 
 export const MainPage = () => {
   const dispatch = useDispatch()
@@ -16,13 +18,20 @@ export const MainPage = () => {
     hasError
   } = useSelector(ingredientsSelector)
 
+  const { isLoading: orderIsLoading } = useSelector(orderDetailsSelector)
+
   useEffect(() => {
     dispatch(getIngredients())
   }, [])
 
+  if (isLoading || orderIsLoading) {
+    return (
+    <LoadingSpinner/>
+    )
+  }
+
   return (
     <main className={styles.main}>
-      {isLoading && 'Загрузка...'}
       {hasError && 'Ошибка'}
       {!isLoading && !hasError && <>
       <DndProvider backend={HTML5Backend}>

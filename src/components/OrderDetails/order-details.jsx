@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './order-details.module.css'
 import OrderCreatedIcon from '../../images/OrderCreated.svg'
 import { useSelector } from 'react-redux'
-import { orderDetailsSelector } from '../../services/slices/orde-details'
+import { orderDetailsSelector } from '../../services/slices/order-details'
 
 export const OrderDetails = () => {
   const { orderId: id } = useSelector(orderDetailsSelector)

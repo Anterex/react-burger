@@ -12,10 +12,14 @@ const root = document.querySelector('#modal')
 export const Modal = (props) => {
   const dispatch = useDispatch()
 
+  const closePopup = () => {
+    dispatch(closeModalForm())
+  }
+
   useEffect(() => {
     function closeModalEscape (event) {
       if (event.key === 'Escape') {
-        dispatch(closeModalForm())
+        closePopup()
       }
     }
 
@@ -33,13 +37,13 @@ export const Modal = (props) => {
         <div className={`${styles.modal} p-10 pb-15`}>
           <div className={styles.header}>
             <h3 className="text text_type_main-large">{title}</h3>
-            <button className={styles.close} onClick={() => dispatch(closeModalForm())}>
+            <button className={styles.close} onClick={closePopup}>
               <CloseIcon type="primary"/>
             </button>
           </div>
           {props.children}
         </div>
-        <ModalOverlay closeHandler={() => dispatch(closeModalForm())}/>
+        <ModalOverlay closeHandler={closePopup}/>
       </>
     ), root
   )
