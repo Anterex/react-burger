@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react'
-import styles from './main-page.module.css'
-import { BurgerIngredients } from '../BurgerIngredients/burger-ingredients'
-import { BurgerConstructor } from '../BurgerConstructor/burger-constructor'
+import styles from './main.module.css'
+import { BurgerIngredients } from '../../components/BurgerIngredients/burger-ingredients'
+import { BurgerConstructor } from '../../components/BurgerConstructor/burger-constructor'
 import { useDispatch, useSelector } from 'react-redux'
 import { ingredientsSelector } from '../../services/slices/ingredients'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { getIngredients } from '../../services/actions/api'
-import { LoadingSpinner } from '../LoadingSpinner/loading-spinner'
+import { LoadingSpinner } from '../../components/LoadingSpinner/loading-spinner'
 import { orderDetailsSelector } from '../../services/slices/order-details'
 
-export const MainPage = () => {
+export const Main = () => {
   const dispatch = useDispatch()
 
   const {
