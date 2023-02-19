@@ -1,43 +1,36 @@
-import React, { useMemo, useState } from 'react'
-import PropTypes from 'prop-types'
-import { IngredientPropTypes } from '../../utils/propTypes'
+import React from 'react'
+import { v4 as uuidv4 } from 'uuid'
 import styles from './burger-constructor.module.css'
 import { BurgerConstructorFixedItem } from '../BurgerConstructorFixedItem/burger-constructor-fixed-item'
 import { BurgerConstructorItemsList } from '../BurgerConstructorItemsList/burger-constructor-items-list'
-import { Modal } from '../Modal/modal'
-import { OrderDetails } from '../OrderDetails/order-details'
-import { postOrder } from '../../utils/burger-api'
 import { BurgerConstructorFooter } from '../BurgerConstructorFooter/burger-constructor-footer'
+import { useDispatch } from 'react-redux'
+import { addIngredient } from '../../services/slices/burger-constructor'
+import { DRAG_TYPES } from '../../utils/constants'
+import { useDrop } from 'react-dnd'
 
-export const createOrder = (setOrderData, setOpenedModal) => {
-  setOrderData(postOrder())
-  setOpenedModal(true)
-}
+export const BurgerConstructor = () => {
+  const dispatch = useDispatch()
 
-export const BurgerConstructor = (props) => {
-  const [openedModal, setOpenedModal] = useState(false)
-  const [orderData, setOrderData] = useState(-1)
-
-  const bun = useMemo(() => props.data.find((el) => el.type === 'bun'), [props.data])
-  const ingredients = useMemo(() => props.data.filter((el) => el.type !== 'bun'), [props.data])
+  const [, drop] = useDrop({
+    accept: DRAG_TYPES.ingredient,
+    drop (item) {
+      const newItem = {
+        ...item,
+        uniqueId: uuidv4()
+      }
+      dispatch(addIngredient(newItem))
+    }
+  })
 
   return (
-    <>
-      <section className={styles.container}>
-        <div className={styles.constructor}>
-          <BurgerConstructorFixedItem type={'top'} data={bun}/>
-          <BurgerConstructorItemsList ingredients={ingredients}/>
-          <BurgerConstructorFixedItem type={'bottom'} data={bun}/>
-        </div>
-        <BurgerConstructorFooter setOpenedModal={setOpenedModal} setOrderData={setOrderData}/>
-      </section>
-      {openedModal && <Modal close={() => setOpenedModal(false)}>
-        <OrderDetails id={orderData.id}/>
-      </Modal>}
-    </>
+    <section className={styles.container}>
+      <div ref={drop} className={styles.constructor}>
+        <BurgerConstructorFixedItem type={'top'}/>
+        <BurgerConstructorItemsList/>
+        <BurgerConstructorFixedItem type={'bottom'}/>
+      </div>
+      <BurgerConstructorFooter/>
+    </section>
   )
-}
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(IngredientPropTypes.isRequired).isRequired
 }

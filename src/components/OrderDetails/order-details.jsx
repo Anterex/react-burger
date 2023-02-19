@@ -1,8 +1,12 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import styles from './order-details.module.css'
 import OrderCreatedIcon from '../../images/OrderCreated.svg'
-export const OrderDetails = ({ id }) => {
+import { useSelector } from 'react-redux'
+import { orderDetailsSelector } from '../../services/slices/order-details'
+
+export const OrderDetails = () => {
+  const { orderId: id } = useSelector(orderDetailsSelector)
+
   return (
     <div className={styles.wrapper}>
       <div className={`text text_type_digits-large ${styles.id}`}>{id}</div>
@@ -16,8 +20,4 @@ export const OrderDetails = ({ id }) => {
       </div>
     </div>
   )
-}
-
-OrderDetails.propTypes = {
-  id: PropTypes.number.isRequired
 }
