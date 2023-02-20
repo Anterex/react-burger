@@ -2,10 +2,13 @@ import React from 'react'
 import styles from './ingredient-details.module.css'
 import { IngredientDetailsDescription } from '../IngredientDetailsDescription/ingredient-details-description'
 import { useSelector } from 'react-redux'
-import { ingredientDetailsSelector } from '../../services/slices/ingredient-details'
+import { ingredientsSelector } from '../../services/slices/ingredients'
+import { useParams } from 'react-router-dom'
 
 export const IngredientDetails = () => {
-  const { selectedIngredient } = useSelector(ingredientDetailsSelector)
+  const { data } = useSelector(ingredientsSelector)
+  const { ingredientId } = useParams()
+  const selectedIngredient = data.find(item => item._id === ingredientId)
 
   return (
     <div className={styles.wrapper}>

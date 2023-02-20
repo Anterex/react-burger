@@ -18,3 +18,8 @@
   margin-bottom: 0;
   text-align: center;
 }
+
+.parent a {
+  text-decoration: none;
+  color: inherit;
+}
