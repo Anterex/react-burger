@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Input, Button, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './reset-password.module.css'
 import { Link, useNavigate } from 'react-router-dom'
@@ -18,14 +18,11 @@ export const ResetPassword = () => {
   }, []
   )
 
-  const submitFormHandler = useCallback(
-    e => {
-      e.preventDefault()
-      dispatch(resetPassword(values))
-      navigate('/login')
-    },
-    [values]
-  )
+  const submitFormHandler = () => {
+    dispatch(resetPassword(values))
+    navigate('/login')
+  }
+
   return (
     <section className={styles.container}>
       <h2 className='text text_type_main-medium mb-6'>Восстановление пароля</h2>

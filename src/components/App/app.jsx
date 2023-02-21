@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { IngredientDetails } from '../IngredientDetails/ingredient-details'
 import { Modal } from '../Modal/modal'
 import { getIngredients, ingredientsSelector } from '../../services/slices/ingredients'
+import { Orders } from '../../pages/Orders/orders'
 
 export const App = () => {
   const dispatch = useDispatch()
@@ -27,6 +28,8 @@ export const App = () => {
     hasError,
     data
   } = useSelector(ingredientsSelector)
+
+  const goPrevPage = -1
 
   useEffect(() => {
     if (!isAuthChecked) {
@@ -46,7 +49,7 @@ export const App = () => {
   }, [isAuthChecked])
 
   const handleModalClose = () => {
-    history(-1)
+    history(goPrevPage)
   }
 
   useEffect(() => {
@@ -63,6 +66,7 @@ export const App = () => {
           <Route path="/forgot-password" element={<ProtectedRoute onlyUnAuth={true}><ForgotPassword/></ProtectedRoute>} exact={true}/>
           <Route path="/reset-password" element={<ProtectedRoute onlyUnAuth={true}><ResetPassword/></ProtectedRoute>} exact={true}/>
           <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>} exact={true}/>
+          <Route path="/profile/orders" element={<ProtectedRoute><Orders/></ProtectedRoute>} exact={true}/>
           <Route path="/ingredients/:ingredientId" exact element={<IngredientDetails/>}/>
           <Route path="/" element={<Main/>} exact={true}/>
           <Route path="*" element={<Page404/>} exact={true}/>

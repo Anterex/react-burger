@@ -10,19 +10,16 @@ export const Profile = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user } = useSelector(authorizationSelector)
-  const { values, handleChange, setValues } = useInput({ name: '', email: '' })
+  const { values, InputChangeHandler, setValues } = useInput({ name: '', email: '' })
 
   useEffect(() => {
     setValues(user)
   }, [user])
 
-  const update = useCallback(
-    e => {
-      e.preventDefault()
-      dispatch(updateUser(values))
-    },
-    [values]
-  )
+  const update = () => {
+    dispatch(updateUser(values))
+  }
+
   const logout = useCallback(
     e => {
       e.preventDefault()
@@ -46,9 +43,9 @@ export const Profile = () => {
       </div>
       <div>
         <form onSubmit={update}>
-          <Input name='name' value={values.name} onChange={handleChange} placeholder='Имя'/>
-          <EmailInput name='email' value={values.email} onChange={handleChange} placeholder='E-mail'/>
-          <PasswordInput name='password' value='' onChange={handleChange} placeholder='Пароль'/>
+          <Input name='name' value={values.name} onChange={InputChangeHandler} placeholder='Имя'/>
+          <EmailInput name='email' value={values.email} onChange={InputChangeHandler} placeholder='E-mail'/>
+          <PasswordInput name='password' value='' onChange={InputChangeHandler} placeholder='Пароль'/>
           <Button htmlType='submit'>Сохранить</Button>
         </form>
       </div>

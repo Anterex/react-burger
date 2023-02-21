@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './login.module.css'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -15,14 +15,11 @@ export const Login = () => {
 
   const fromPage = location.state?.from || '/'
 
-  const submitFormHandler = useCallback(
-    e => {
-      e.preventDefault()
-      dispatch(signIn(values))
-      navigate(fromPage, { replace: true })
-    },
-    [values]
-  )
+  const submitFormHandler = () => {
+    dispatch(signIn(values))
+    navigate(fromPage, { replace: true })
+  }
+
   return (
           <section className={styles.container}>
             <h2 className='text text_type_main-medium mb-6'>Вход</h2>

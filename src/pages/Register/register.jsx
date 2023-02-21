@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './register.module.css'
 import { Link } from 'react-router-dom'
@@ -10,13 +10,9 @@ export const Register = () => {
   const { values, InputChangeHandler } = useInput({ name: '', email: '', password: '' })
   const dispatch = useDispatch()
 
-  const submitFormHandler = useCallback(
-    e => {
-      e.preventDefault()
-      dispatch(register(values))
-    },
-    [values]
-  )
+  const submitFormHandler = () => {
+    dispatch(register(values))
+  }
 
   return (
         <section className={styles.container}>
