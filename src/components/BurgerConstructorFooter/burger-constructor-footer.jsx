@@ -14,13 +14,13 @@ export const BurgerConstructorFooter = () => {
   const location = useLocation()
 
   const { bun, ingredientsConstructor } = useSelector(burgerConstructorSelector)
-  const { isAuthChecked } = useSelector(authorizationSelector)
+  const { authenticated } = useSelector(authorizationSelector)
 
   const create = () => {
-    if (!isAuthChecked) {
+    if (!authenticated) {
       navigate('/login', { replace: true, state: { from: location.pathname } })
     }
-    isAuthChecked && bun &&
+    authenticated && bun &&
     dispatch(createOrder({
       ingredients: [bun._id, ...ingredientsConstructor.map(ingredient => ingredient._id), bun._id]
     }))

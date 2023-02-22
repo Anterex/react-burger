@@ -14,7 +14,7 @@ export const AppHeader = () => {
       <div className={styles.container}>
         <nav className={styles.navigation}>
           <HeaderItem url={'/'} active={isConstructor} icon={<BurgerIcon type={!isConstructor ? 'secondary' : 'primary'}/>}> Конструктор </HeaderItem>
-          <HeaderItem url={'/'} active={false} icon={<ListIcon type="secondary"/>}> Лента заказов </HeaderItem>
+          <HeaderItem url={'/profile/orders'} active={false} icon={<ListIcon type="secondary"/>}> Лента заказов </HeaderItem>
         </nav>
         <a href="/" className={styles.logo}> <Logo/> </a>
         <div className={styles.login}>

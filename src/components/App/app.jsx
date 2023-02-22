@@ -10,63 +10,51 @@ import { ResetPassword } from '../../pages/ResetPassword/reset-password'
 import { Profile } from '../../pages/Profile/profile'
 import { Page404 } from '../../pages/404/page-404'
 import { ProtectedRoute } from '../ProtectedRoute/protected-route'
-import { authorizationSelector, checkAuth, getUser, isLoad } from '../../services/slices/auth'
+// import { authorizationSelector, checkAuth } from '../../services/slices/auth'
 import { useDispatch, useSelector } from 'react-redux'
 import { IngredientDetails } from '../IngredientDetails/ingredient-details'
 import { Modal } from '../Modal/modal'
 import { getIngredients, ingredientsSelector } from '../../services/slices/ingredients'
 import { Orders } from '../../pages/Orders/orders'
+import { checkAuth } from '../../services/slices/auth'
+import { orderDetailsSelector } from '../../services/slices/order-details'
+import { LoadingSpinner } from '../LoadingSpinner/loading-spinner'
 
 export const App = () => {
   const dispatch = useDispatch()
-  const { isAuthChecked } = useSelector(authorizationSelector)
   const location = useLocation()
   const history = useNavigate()
   const background = location.state && location.state.background
-  const {
-    isLoading,
-    hasError,
-    data
-  } = useSelector(ingredientsSelector)
-
-  const goPrevPage = -1
-
-  useEffect(() => {
-    if (!isAuthChecked) {
-      dispatch(checkAuth())
-    }
-  }, [])
-
-  useEffect(() => {
-    const get = async () => {
-      await dispatch(getUser())
-    }
-    const load = async () => {
-      await dispatch(isLoad())
-    }
-    isAuthChecked && get()
-    load()
-  }, [isAuthChecked])
-
-  const handleModalClose = () => {
-    history(goPrevPage)
-  }
+  const { isLoading, hasError, data } = useSelector(ingredientsSelector)
+  const { isLoading: orderIsLoading } = useSelector(orderDetailsSelector)
 
   useEffect(() => {
     dispatch(getIngredients())
-  }, [dispatch])
+    dispatch(checkAuth())
+  }, [])
 
+  if (isLoading || orderIsLoading) {
+    return (
+      <LoadingSpinner/>
+    )
+  }
+
+  const goPrevPage = -1
+  const handleModalClose = () => {
+    history(goPrevPage)
+  }
+  console.log('app')
   return (
     <>
       <AppHeader/>
       {!isLoading && !hasError && data.length &&
         <Routes location={background || location}>
-          <Route path="/login" element={<ProtectedRoute onlyUnAuth={true}><Login/> </ProtectedRoute>} exact={true}/>
-          <Route path="/register" element={<ProtectedRoute onlyUnAuth={true}><Register/></ProtectedRoute>} exact={true}/>
-          <Route path="/forgot-password" element={<ProtectedRoute onlyUnAuth={true}><ForgotPassword/></ProtectedRoute>} exact={true}/>
-          <Route path="/reset-password" element={<ProtectedRoute onlyUnAuth={true}><ResetPassword/></ProtectedRoute>} exact={true}/>
-          <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>} exact={true}/>
-          <Route path="/profile/orders" element={<ProtectedRoute><Orders/></ProtectedRoute>} exact={true}/>
+          <Route path="/login" element={<ProtectedRoute><Login/> </ProtectedRoute>} exact={true}/>
+          <Route path="/register" element={<ProtectedRoute ><Register/></ProtectedRoute>} exact={true}/>
+          <Route path="/forgot-password" element={<ProtectedRoute><ForgotPassword/></ProtectedRoute>} exact={true}/>
+          <Route path="/reset-password" element={<ProtectedRoute><ResetPassword/></ProtectedRoute>} exact={true}/>
+          <Route path="/profile" element={<ProtectedRoute onlyAuth={true}><Profile/></ProtectedRoute>} exact={true}/>
+          <Route path="/profile/orders" element={<ProtectedRoute onlyAuth={true}><Orders/></ProtectedRoute>} exact={true}/>
           <Route path="/ingredients/:ingredientId" exact element={<IngredientDetails/>}/>
           <Route path="/" element={<Main/>} exact={true}/>
           <Route path="*" element={<Page404/>} exact={true}/>

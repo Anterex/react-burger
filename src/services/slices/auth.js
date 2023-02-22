@@ -5,25 +5,23 @@ import { optionsGetSecured, optionsPatchSecured, optionsPost } from '../../utils
 import { fetchWithRefresh, request } from '../../utils/api'
 
 const initialState = {
-  isAuthChecked: false,
-
-  loading: true,
-
+  authenticated: false,
   user: null,
+  userDataLoading: false,
 
   registerUserError: null,
   registerUserRequest: false,
 
   loginUserError: null,
-  loginUserRequest: false,
+  loginUserLoading: false,
 
   updateUserError: null,
-  updateUserRequest: false,
+  updateUserLoading: false,
 
-  getUserError: null,
+  getUserDataError: null,
   getUserRequest: false,
 
-  forgotPasswordRequest: false,
+  forgotPasswordLoading: false,
   forgotPasswordError: null,
 
   logoutUserError: null
@@ -34,16 +32,15 @@ export const authorizationSlice = createSlice({
   initialState,
   reducers: {
     loginRequest: (state) => {
-      state.isAuthChecked = false
       state.loginUserRequest = true
+      state.authenticated = false
       state.user = null
     },
     loginSuccess: (state) => {
-      state.isAuthChecked = true
+      state.authenticated = true
       state.loginUserRequest = false
     },
     loginError: (state, { payload }) => {
-      state.isAuthChecked = false
       state.loginUserRequest = false
       state.loginUserError = payload
     },
@@ -67,11 +64,12 @@ export const authorizationSlice = createSlice({
     },
     updateUserError: (state, { payload }) => {
       state.loginUserRequest = false
+      state.authenticated = false
       state.user = null
       state.updateUserError = payload
     },
     logoutSuccess: (state) => {
-      state.isAuthChecked = false
+      state.authenticated = false
       state.user = null
     },
     logoutError: (state, { payload }) => {
@@ -86,9 +84,6 @@ export const authorizationSlice = createSlice({
     forgotError: (state, { payload }) => {
       state.forgotPasswordRequest = false
       state.forgotPasswordError = payload
-    },
-    isLoad: (state) => {
-      state.loading = false
     }
   }
 })
@@ -107,40 +102,10 @@ export const {
   forgotError,
   logoutError,
   loginError,
-  getUserError,
-  isLoad
+  getUserError
 } = authorizationSlice.actions
 
 export const authorizationSelector = state => state.authorization
-
-export function getUser () {
-  return async function (dispatch) {
-    dispatch(getUserRequest())
-    return await fetchWithRefresh(userUrl, optionsGetSecured())
-      .then(data => {
-        if (data.success) {
-          dispatch(getUserSuccess(data.user))
-        }
-        return data.success
-      }).catch(error => dispatch(getUserError(error)))
-  }
-}
-
-export function signIn (form) {
-  return async function (dispatch) {
-    dispatch(loginRequest())
-    return await request(loginUrl, optionsPost(form))
-      .then(data => {
-        if (data.success) {
-          setCookie('accessToken', data.accessToken.split('Bearer ')[1])
-          setCookie('refreshToken', data.refreshToken)
-          localStorage.setItem('refreshToken', data.refreshToken)
-          dispatch(loginSuccess())
-        }
-        return data.success
-      }).catch(error => dispatch(loginError(error)))
-  }
-}
 
 export function register (form) {
   return async function (dispatch) {
@@ -155,6 +120,49 @@ export function register (form) {
         }
         return data.success
       }).catch(error => dispatch(loginError(error)))
+  }
+}
+
+export function signIn (form) {
+  return async function (dispatch) {
+    dispatch(loginRequest())
+    return await request(loginUrl, optionsPost(form))
+      .then(data => {
+        if (data.success) {
+          console.log('signInSuccess:' + data)
+          setCookie('accessToken', data.accessToken.split('Bearer ')[1])
+          setCookie('refreshToken', data.refreshToken)
+          localStorage.setItem('refreshToken', data.refreshToken)
+          dispatch(loginSuccess())
+        }
+        return data.success
+      }).catch(error => dispatch(loginError(error)))
+  }
+}
+
+export function getUserData () {
+  return async function (dispatch) {
+    dispatch(getUserRequest())
+    return await fetchWithRefresh(userUrl, optionsGetSecured())
+      .then(async data => {
+        if (data.success) {
+          dispatch(getUserSuccess(data.user))
+        }
+        return data.success
+      }).catch(error => dispatch(getUserError(error)))
+  }
+}
+
+export function updateUser (form) {
+  return async function (dispatch) {
+    dispatch(updateUserRequest())
+    await fetchWithRefresh(userUrl, optionsPatchSecured(form))
+      .then(data => {
+        if (data.success) {
+          dispatch(updateUserSuccess(data.user))
+        }
+        return data.success
+      }).catch(error => dispatch(updateUserError(error)))
   }
 }
 
@@ -173,19 +181,6 @@ export function signOut () {
   }
 }
 
-export function updateUser (form) {
-  return async function (dispatch) {
-    dispatch(updateUserRequest())
-    await fetchWithRefresh(userUrl, optionsPatchSecured(form))
-      .then(data => {
-        if (data.success) {
-          dispatch(updateUserSuccess(data.user))
-        }
-        return data.success
-      }).catch(error => dispatch(updateUserError(error)))
-  }
-}
-
 export function forgotPassword (form) {
   return async function (dispatch) {
     dispatch(forgotRequest())
@@ -196,7 +191,6 @@ export function forgotPassword (form) {
       }).catch(error => dispatch(forgotError(error)))
   }
 }
-
 export function resetPassword (form) {
   return async function (dispatch) {
     return await request(resetPasswordUrl, optionsPost(form))

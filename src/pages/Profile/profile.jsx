@@ -1,33 +1,41 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import styles from './profile.module.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, EmailInput, Input, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useDispatch, useSelector } from 'react-redux'
 import { useInput } from '../../hooks/use-input'
-import { authorizationSelector, signOut, updateUser } from '../../services/slices/auth'
+import { authorizationSelector, getUserData, signOut, updateUser } from '../../services/slices/auth'
+import { LoadingSpinner } from '../../components/LoadingSpinner/loading-spinner'
 
 export const Profile = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { user } = useSelector(authorizationSelector)
+  const { user, getUserRequest } = useSelector(authorizationSelector)
   const { values, InputChangeHandler, setValues } = useInput({ name: '', email: '' })
 
   useEffect(() => {
-    setValues(user)
+    dispatch(getUserData())
+  }, [])
+
+  useEffect(() => {
+    if (user) { setValues(user) }
   }, [user])
 
   const update = () => {
     dispatch(updateUser(values))
   }
 
-  const logout = useCallback(
-    e => {
-      e.preventDefault()
-      dispatch(signOut())
-      navigate('/', { replace: true })
-    },
-    [values]
-  )
+  const logout = () => {
+    dispatch(signOut())
+    navigate('/', { replace: true })
+  }
+
+  if (getUserRequest) {
+    return (
+      <LoadingSpinner/>
+    )
+  }
+
   return (
     <div className={styles.content}>
       <div>
@@ -50,6 +58,5 @@ export const Profile = () => {
         </form>
       </div>
     </div>
-
   )
 }
