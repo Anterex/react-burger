@@ -8,8 +8,6 @@ export const ProtectedRoute = ({ children, onlyAuth = false }) => {
   const { authenticated } = useSelector(authorizationSelector)
   const location = useLocation()
 
-  console.log('authenticated:' + authenticated)
-
   if (!onlyAuth && authenticated) {
     const fromPage = location.state?.from || '/'
     return <Navigate to={fromPage} />
