@@ -38,12 +38,10 @@ export const App = () => {
       <LoadingSpinner/>
     )
   }
-
   const goPrevPage = -1
   const handleModalClose = () => {
     history(goPrevPage)
   }
-  console.log('app')
   return (
     <>
       <AppHeader/>
