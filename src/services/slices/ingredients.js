@@ -1,4 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { ingredientsListUrl } from '../../utils/config'
+import { request } from '../../utils/api'
+import { optionsGet } from '../../utils/apiOptions'
 
 const initialState = {
   isLoading: true,
@@ -30,3 +33,16 @@ export const {
 } = ingredientsSlice.actions
 
 export const ingredientsSelector = state => state.ingredients
+
+export function getIngredients () {
+  return async function (dispatch) {
+    dispatch(getData())
+    try {
+      const data = await request(ingredientsListUrl, optionsGet)
+      dispatch(getDataSuccess(data.data))
+    } catch (error) {
+      dispatch(getDataFailure())
+      console.log('Ошибка получения списка ингредиентов', error)
+    }
+  }
+}

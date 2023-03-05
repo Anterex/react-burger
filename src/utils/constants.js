@@ -4,8 +4,7 @@ export const INGREDIENT_TYPES = {
   MAIN: 'main'
 }
 
-export const DRAG_TYPES =
-  {
-    ingredient: 'ingredient',
-    constructor: 'constructor'
-  }
+export const DRAG_TYPES = {
+  ingredient: 'ingredient',
+  constructor: 'constructor'
+}
