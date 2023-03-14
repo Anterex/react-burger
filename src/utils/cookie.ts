@@ -6,8 +6,11 @@ export function getCookie (name: string): string | null {
   return (matches != null) ? decodeURIComponent(matches[1]) : null
 }
 
-export function setCookie (name: any, value: any, props: any): void {
-  props = props != null || {}
+export function setCookie (name: any, value: any, props: {
+  path?: string
+  expires?: Date | string | number
+  [propName: string]: any
+}): void {
   let exp: any = props.expires
   if (typeof exp === 'number') {
     const d = new Date()

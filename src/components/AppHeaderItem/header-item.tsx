@@ -1,12 +1,12 @@
-import React, { FC } from 'react'
+import React, { FC, ReactNode } from 'react'
 import styles from './header-item.module.css'
 import { Link } from 'react-router-dom'
 
 interface IHeaderItem {
   active: boolean
   url: string
-  icon: any
-  children: any
+  icon: ReactNode
+  children: ReactNode
 }
 
 export const HeaderItem: FC<IHeaderItem> = ({ active, url, icon, children }) => {

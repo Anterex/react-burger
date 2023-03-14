@@ -2,6 +2,7 @@ import { setCookie } from './cookie'
 import { tokenUrl } from './config'
 import { IUser } from '../Abstraction/IUser'
 import { ICustomRequestInit } from './ICustomRequestInit'
+import { ICustomResponse } from './ICustomResponse'
 
 export async function request <T> (url: string, options?: RequestInit): Promise<T> {
   return await fetch(url, options).then(async res => await checkResponse<T>(res))
@@ -41,7 +42,7 @@ export const fetchWithRefresh = async (url: string, options: ICustomRequestInit)
         await Promise.reject(refreshData)
       }
       localStorage.setItem('refreshToken', refreshData.refreshToken)
-      setCookie('accessToken', refreshData.accessToken, null)
+      setCookie('accessToken', refreshData.accessToken, {})
       // @ts-expect-error
       options.headers.authorization = refreshData.accessToken
       const res = await fetch(url, options) // повторяем запрос

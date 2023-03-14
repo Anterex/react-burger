@@ -12,7 +12,7 @@ export const Profile: FC = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { user, getUserRequest } = useSelector(authorizationSelector)
-  const { values, InputChangeHandler, setValues } = useInput({ name: '', email: '' })
+  const { values, InputChangeHandler, setValues } = useInput({ name: '', email: '', password: '' })
 
   useEffect(() => {
     void dispatch(getUserData())
@@ -22,8 +22,12 @@ export const Profile: FC = () => {
     if (user != null) { setValues(user) }
   }, [user])
 
-  const update = (e: FormEvent): void => {
+  const update = (): void => {
     void dispatch(updateUser(values))
+  }
+
+  const resetInput = (): void => {
+    setValues({ name: user?.name, email: user?.email, password: '' })
   }
 
   const logout = (e: FormEvent): void => {
@@ -36,6 +40,8 @@ export const Profile: FC = () => {
       <LoadingSpinner/>
     )
   }
+
+  const isChanged: boolean = (values.name !== user?.name || values.email !== user?.email || values.password !== '')
 
   return (
     <div className={styles.content}>
@@ -54,8 +60,13 @@ export const Profile: FC = () => {
         <form onSubmit={update}>
           <Input name='name' value={values.name} onChange={InputChangeHandler} placeholder='Имя'/>
           <EmailInput name='email' value={values.email} onChange={InputChangeHandler} placeholder='E-mail'/>
-          <PasswordInput name='password' value='' onChange={InputChangeHandler} placeholder='Пароль'/>
-          <Button htmlType='submit'>Сохранить</Button>
+          <PasswordInput name='password' value={values.password} onChange={InputChangeHandler} placeholder='Пароль'/>
+          {isChanged && (
+            <div className={`mt-2 ${styles.bottom}`}>
+              <button onClick={resetInput} type="button" className={`${styles.reject} text text_type_main-default text_color_inactive`}>Отмена</button>
+              <Button htmlType="submit" type="primary" size="medium">Сохранить</Button>
+            </div>
+          )}
         </form>
       </div>
     </div>

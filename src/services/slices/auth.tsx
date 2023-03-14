@@ -149,8 +149,8 @@ export function register (form: IRegisterForm) {
     return await request<IRegister>(registerUrl, optionsPost(form))
       .then(data => {
         if (data.success) {
-          setCookie('accessToken', data.accessToken.split('Bearer ')[1], null)
-          setCookie('refreshToken', data.refreshToken, null)
+          setCookie('accessToken', data.accessToken.split('Bearer ')[1], {})
+          setCookie('refreshToken', data.refreshToken, {})
           localStorage.setItem('refreshToken', data.refreshToken)
           dispatch(loginSuccess())
         }
@@ -170,8 +170,8 @@ export function signIn (form: ILogin) {
     return await request<IRegister>(loginUrl, optionsPost(form))
       .then(data => {
         if (data.success) {
-          setCookie('accessToken', data.accessToken.split('Bearer ')[1], null)
-          setCookie('refreshToken', data.refreshToken, null)
+          setCookie('accessToken', data.accessToken.split('Bearer ')[1], {})
+          setCookie('refreshToken', data.refreshToken, {})
           localStorage.setItem('refreshToken', data.refreshToken)
           dispatch(loginSuccess())
         }
@@ -186,6 +186,7 @@ export function getUserData () {
     return await fetchWithRefresh(userUrl, optionsGetSecured())
       .then(async data => {
         if (data.success) {
+          // @ts-expect-error
           dispatch(getUserSuccess(data.user))
         }
         return data.success
@@ -199,6 +200,7 @@ export function updateUser (form: any) {
     await fetchWithRefresh(userUrl, optionsPatchSecured(form))
       .then(data => {
         if (data.success) {
+          // @ts-expect-error
           dispatch(updateUserSuccess(data.user))
         }
         return data.success
