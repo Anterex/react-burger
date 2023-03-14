@@ -12,6 +12,7 @@ export const ForgotPassword: FC = () => {
   const dispatch = useAppDispatch()
 
   const submitFormHandler = async (e: FormEvent): Promise<void> => {
+    e.preventDefault()
     // @ts-expect-error
     const success: boolean = await dispatch(forgotPassword(values))
     success && navigate('/reset-password')

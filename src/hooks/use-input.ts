@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState } from 'react'
 
 export function useInput (inputValues: any): any {
   const [values, setValues] = useState(inputValues)
@@ -8,12 +8,5 @@ export function useInput (inputValues: any): any {
     setValues({ ...values, [name]: value })
   }
 
-  const resetForm = useCallback(
-    (newValues = {}) => {
-      setValues(newValues)
-    },
-    [setValues]
-  )
-
-  return { values, InputChangeHandler, setValues, resetForm }
+  return { values, InputChangeHandler, setValues }
 }

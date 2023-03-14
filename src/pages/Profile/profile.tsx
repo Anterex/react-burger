@@ -22,7 +22,8 @@ export const Profile: FC = () => {
     if (user != null) { setValues(user) }
   }, [user])
 
-  const update = (): void => {
+  const update = (e: FormEvent): void => {
+    e.preventDefault()
     void dispatch(updateUser(values))
   }
 
@@ -31,6 +32,7 @@ export const Profile: FC = () => {
   }
 
   const logout = (e: FormEvent): void => {
+    e.preventDefault()
     void dispatch(signOut())
     navigate('/', { replace: true })
   }
@@ -60,7 +62,7 @@ export const Profile: FC = () => {
         <form onSubmit={update}>
           <Input name='name' value={values.name} onChange={InputChangeHandler} placeholder='Имя'/>
           <EmailInput name='email' value={values.email} onChange={InputChangeHandler} placeholder='E-mail'/>
-          <PasswordInput name='password' value={values.password} onChange={InputChangeHandler} placeholder='Пароль'/>
+          <PasswordInput name='password' value={values.password ?? ''} onChange={InputChangeHandler} placeholder='Пароль'/>
           {isChanged && (
             <div className={`mt-2 ${styles.bottom}`}>
               <button onClick={resetInput} type="button" className={`${styles.reject} text text_type_main-default text_color_inactive`}>Отмена</button>

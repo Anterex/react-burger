@@ -11,6 +11,7 @@ export const Register: FC = () => {
   const dispatch = useAppDispatch()
 
   const submitFormHandler = (e: FormEvent): void => {
+    e.preventDefault()
     void dispatch(register(values))
   }
 

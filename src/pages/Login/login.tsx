@@ -1,7 +1,7 @@
 import React, { FC, FormEvent } from 'react'
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './login.module.css'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useInput } from '../../hooks/use-input'
 import { signIn } from '../../services/slices/auth'
 import { useAppDispatch } from '../../services/slices'
@@ -10,14 +10,12 @@ export const Login: FC = () => {
   const { values, InputChangeHandler } = useInput({ email: '', password: '' })
 
   const navigate = useNavigate()
-  const location = useLocation()
   const dispatch = useAppDispatch()
 
-  const fromPage: string = location.state?.from ?? '/'
-
   const submitFormHandler = (e: FormEvent): void => {
+    e.preventDefault()
     void dispatch(signIn(values))
-    navigate(fromPage, { replace: true })
+    navigate('/', { replace: true })
   }
 
   return (

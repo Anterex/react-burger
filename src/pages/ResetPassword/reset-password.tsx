@@ -19,6 +19,7 @@ export const ResetPassword: FC = () => {
   )
 
   const submitFormHandler = (e: FormEvent): void => {
+    e.preventDefault()
     void dispatch(resetPassword(values))
     navigate('/login')
   }
